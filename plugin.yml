@@ -1,0 +1,68 @@
+name: ${project.name}
+version: ${project.version}
+author: totemo
+authors: []
+description: ${project.description}
+website: ${project.url}
+main: nu.nerd.oddjob.OddJob
+depend: [Vault]
+
+permissions:
+  oddjob.console:
+    description: Permission to use commands that require console access.
+    default: op
+
+  oddjob.task:
+    description: Permission to use /task.
+    default: op
+
+  oddjob.runas:
+    description: Permission to use /runas.
+    default: op
+
+commands:
+  oddjob:
+    description: Administrative command.
+    permission: oddjob.console
+    usage: |
+    
+      §e/<command> help§f - Show usage help.
+      §e/<command> reload§f - Reload the plugin configuration. 
+      §e/<command> save-tasks§f - Save task instances. 
+      §e/<command> load-tasks§f - Load task instances. 
+  
+  task:
+    description: Commands to run and cancel tasks. 
+    permission: oddjob.task
+    usage: |
+    
+      §e/<command> help§f - Show usage help.
+      §e/<command> types§f - List all task types defined in the configuration.
+      §e/<command> describe <task-type>§f - Show a description of the
+        actions performed by the specified task type.
+      §e/<command> run <task-id> <task-type> <player> §f[§e<time>]§f - Run a task
+        now or schedule it to run at some future time. §e<task-id>§f
+        uniquely identifies the task. §e<task-type>§f is one of the types
+        listed by §e/<command> types§f. §e<player>§f is the name or UUID of the
+        target player; the corresponding name or UUID will replace
+        §e%player%§f and §e%uuid%§f in commands, respectively. §e<time>§f is either
+        an absolute or relative time of some future moment when the
+        task should execute. Absolute times take the form §e@<num>§f,
+        where num is the number of seconds since Epoch (Jan 1,
+        1970). Relative times take the form §e+(<num><unit>)+§f, where
+        §e<num>§f is an integer with no sign and §e<unit>§f is 'h', 'm' or 's';
+        examples "+24h", "+10m", "+23h59m59s". Neither absolute nor 
+        relative times can contain spaces.
+      §e/<command> cancel <task-id>§f - Cancel the scheduled task with the
+        specified §e<task-id>§f.
+
+  runas:
+    description: Run a command as a specified player. 
+    permission: oddjob.runas
+    aliases: ['run-as']
+    usage: |
+    
+      §e/<command> help§f - Show usage help.
+      §e/<command> <player> <command-line>§f - Run the specified command
+        line as the specified player. You can use the player name
+        "console" to run a command as the server console. 

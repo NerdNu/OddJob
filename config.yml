@@ -1,0 +1,9 @@
+debug:
+  config: false
+  events: false
+  commands: false
+  tasks: false
+
+task-period-ticks: 40
+
+tasks: {}
