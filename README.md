@@ -215,7 +215,7 @@ Commands
        `%uuid%` in commands, respectively.
      * `<time>` is either an absolute or relative time of some 
        future moment when the task should execute. 
-     * Absolute times take the form `@<num>`, where num is the number of
+       Absolute times take the form `@<num>`, where num is the number of
        seconds since Epoch (Jan 1, 1970). Relative times take the form 
        `+(<num><unit>)+`, where `<num>` is an integer with no sign and 
        `<unit>` is 'h', 'm' or 's'; examples "+24h", "+10m", "+23h59m59s".
@@ -225,8 +225,8 @@ Commands
 
  * `/runas` or `/run-as` - Run a command as a specified player. 
    * Permission: `oddjob.runas`
-     * `/runas help` - Show usage help.
-     * `/runas <player> <command-line>` - Run the specified command
+   * `/runas help` - Show usage help.
+   * `/runas <player> <command-line>` - Run the specified command
        line as the specified player. You can use the player name
        "console" to run a command as the server console. 
 
