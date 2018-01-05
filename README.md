@@ -29,22 +29,29 @@ Task Types
 The *task type* defines the actions of all tasks that have that type. It is,
 in effect, a simple script.
 
-Task types are defined in the OddJob configuration `config.yml` as a 
+Task types are defined in the OddJob configuration, `config.yml`, as a 
 configuration section whose name uniquely identifies the task type. Each task
-type sections contains the following keys:
+type section contains the following keys:
 
- * `permission` - If not `null`, the *task*'s target player must possess this permission or the task will do nothing when executed.
- * `online` - If `true`, execution of the task will be delayed after it's appointed time until the target player is online.
+ * `permission` - If not `null`, the *task*'s target player must possess this
+   permission or the task will do nothing when executed. The plugin does not
+   currently support negated permissions (e.g. `^someplugin.somepermission`)
+   but could do in the future.
+ * `online` - If `true`, execution of the task will be delayed after it's
+   appointed time until the target player is online.
  * `broadcasts` - A list of broadcast messages to be shown when the task executes.
- * `broadcast-permission` - An optional permission that players must have to receive broadcasts; if unspecified, all players receive broadcasts from tasks of this type.
+ * `broadcast-permission` - An optional permission that players must have to
+   receive broadcasts; if unspecified, all players receive broadcasts from tasks
+   of this type.
  * `messages` - A list of messages sent to the task's target player.
- * `console-commands` - A list of commands executed in the server console (with unlimited permissions).
+ * `console-commands` - A list of commands executed in the server console
+   (with unlimited permissions).
  * `player-commands` - A list of commands executed as the task's target player.
 
 
 Variable Substitution
 ---------------------
-Messages, broadcasts undergo substitution of the following variables:
+Messages and broadcasts undergo substitution of the following variables:
 
  * `%id%` - The unique ID of the currently executing *task*.
  * `%type%` - The unique ID of the *task type* of the task.
@@ -52,7 +59,9 @@ Messages, broadcasts undergo substitution of the following variables:
  * `%uuid%` - The UUID of the target player, or `-` if `null` (not specified).
  * `%seconds%` - The task time specified as seconds since Epoch [1].
  * `%ms%` - The task time specified as milliseconds since Epoch.
- * `%now-seconds%` - The current time specified as seconds since Epoch. Note that this may be later than `%seconds` if the task was delayed waiting for the target player to log in.
+ * `%now-seconds%` - The current time specified as seconds since Epoch. 
+   Note that this may be later than `%seconds%` if the task was delayed 
+   waiting for the target player to log in.
  * `%now-ms%` - The current time specified as milliseconds since Epoch.
  
 When a new task is defined, `%now-seconds%` and `%now-ms%` can be substituted
@@ -69,7 +78,7 @@ Forced Online Task Types
 ------------------------
 If a task type has messages, player commands, or console commands that use
 `/run-as <player> <command>` to run a command as a specified player, then
-the it needs the target player to be online for correct functioning. In this
+it needs the target player to be online for correct functioning. In this
 situation, the task is marked *forced online* and behaves as if the task type
 had `online` set to `true`.
 
@@ -84,9 +93,9 @@ down, and loaded from there when the plugin starts up.
 
 Task Execution
 --------------
-Tasks that are of a type defined to be `online` or determined to be forced 
-online have their execution delayed after their scheduled time until the target
-player logs in. (If the target player is `null`, they won't be delayed.)
+Tasks that are of a type defined to be `online` - or determined to be forced 
+online - have their execution delayed after their scheduled time until the 
+target player logs in. (If the target player is `null`, they won't be delayed.)
 
 When a task is due to run, and the target player is online (if required to be 
 so), tasks perform their actions in the following order:
@@ -149,8 +158,8 @@ tasks:
 Both task types specify player messages, so even though neither is declared
 `online: true`, they are implicitly so ("forced online").
 
-When the plugin that handles incoming vote notifications receives notice that
-the player has voted, it runs the following two commands:
+The vote handling plugin is configured to run the following two commands
+when it receives notice that a player has voted:
 
  * `/task run vote-%player%   vote   %player%`
  * `/task run unvote-%player% unvote %player% +24h`
@@ -184,12 +193,60 @@ prematurely.
 
 Commands
 --------
+ * `/oddjob` - Administrative command.
+   * Permission: `oddjob.console`
+   * `/oddjob help` - Show usage help.
+   * `/oddjob reload` - Reload the plugin configuration. 
+   * `/oddjob save-tasks` - Save task instances. 
+   * `/oddjob load-tasks` - Load task instances. 
+  
+ * `/task` - Commands to run and cancel tasks.
+   * Permission: `oddjob.task`
+   * `/task help` - Show usage help.
+   * `/task types` - List all task types defined in the configuration.
+   * `/task describe <task-type>` - Show a description of the
+      actions performed by the specified task type.
+   * `/task run <task-id> <task-type> <player> [<time>]` - Run a task
+      now or schedule it to run at some future time.
+     * `<task-id>` uniquely identifies the task.
+     * `<task-type>` is one of the types listed by `/task types`.
+     * `<player>` is the name or UUID of the target player; the
+       corresponding name or UUID will replace `%player%` and 
+       `%uuid%` in commands, respectively.
+     * `<time>` is either an absolute or relative time of some 
+       future moment when the task should execute. 
+     * Absolute times take the form `@<num>`, where num is the number of
+       seconds since Epoch (Jan 1, 1970). Relative times take the form 
+       `+(<num><unit>)+`, where `<num>` is an integer with no sign and 
+       `<unit>` is 'h', 'm' or 's'; examples "+24h", "+10m", "+23h59m59s".
+       Neither absolute nor relative times can contain spaces.
+     * `/task cancel <task-id>` - Cancel the scheduled task with the
+       specified `<task-id>`.
+
+ * `/runas` or `/run-as` - Run a command as a specified player. 
+   * Permission: `oddjob.runas`
+     * `/runas help` - Show usage help.
+     * `/runas <player> <command-line>` - Run the specified command
+       line as the specified player. You can use the player name
+       "console" to run a command as the server console. 
 
 
 Configuration
 -------------
+| Setting            | Default | Description |
+| :---               | :---    | :---        |
+| `debug.config`   | false   | If true, log the configuration on (re)load. |
+| `debug.events`   | false   | If true, log actions performed in event handlers. |
+| `debug.commands` | false   | If true, log commands executed by tasks. |
+| `debug.tasks`    | false   | If true, log task scheduling decisions. |
+| `task-period-ticks` | 40  | The number of ticks between checks of the task queue. |
+| `tasks`           | `{}`   | A section/map defining task *types*. |
 
 
 Permissions
 -----------
-
+| Permission         | Default | Description |
+| :---               | :---    | :---        |
+| `oddjob.console` | `op`   | Permission to use commands that require console access. |
+| `oddjob.task`    | `op`   | Permission to use `/task`. |
+| `oddjob.runas`   | `op`   | Permission to use `/runas`. |
