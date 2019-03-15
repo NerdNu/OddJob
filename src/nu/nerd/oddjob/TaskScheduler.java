@@ -180,7 +180,7 @@ public class TaskScheduler {
      *        as one child section each.
      * @param logger a logger for reporting errors.
      */
-    public void save(ConfigurationSection parentSection, Logger logger) {
+    public void save(ConfigurationSection parentSection, @SuppressWarnings("unused") Logger logger) {
         for (Task task : _tasksById.values()) {
             task.save(parentSection);
         }
@@ -293,7 +293,7 @@ public class TaskScheduler {
      * This map has an entry for each task regardless of whether it is pending
      * or overdue.
      */
-    private final HashMap<String, Task> _tasksById = new HashMap();
+    private final HashMap<String, Task> _tasksById = new HashMap<>();
 
     /**
      * Pending tasks in ascending order by time stamp.
@@ -311,6 +311,6 @@ public class TaskScheduler {
      * 
      * Tasks in the set are in ascending order by time.
      */
-    private final HashMap<UUID, TreeSet<Task>> _overdueTasks = new HashMap();
+    private final HashMap<UUID, TreeSet<Task>> _overdueTasks = new HashMap<>();
 
 } // class TaskScheduler

@@ -107,7 +107,7 @@ public class OddJob extends JavaPlugin implements Listener {
      */
     @Override
     public void onDisable() {
-        Bukkit.getScheduler().cancelAllTasks();
+        Bukkit.getScheduler().cancelTasks(this);
         saveTasks();
     }
 
@@ -195,7 +195,7 @@ public class OddJob extends JavaPlugin implements Listener {
      * Bukkit scheduler task implementation that runs the {@link TaskScheduler}
      * task queue.
      */
-    private final class TaskRunner implements Runnable {
+    final class TaskRunner implements Runnable {
         // --------------------------------------------------------------------
         /**
          * @see java.lang.Runnable#run()
@@ -216,7 +216,7 @@ public class OddJob extends JavaPlugin implements Listener {
     /**
      * Map from task type ID to TaskType instance.
      */
-    private final HashMap<String, TaskType> _taskTypes = new HashMap();
+    private final HashMap<String, TaskType> _taskTypes = new HashMap<>();
 
     /**
      * Schedules execution of task instances.

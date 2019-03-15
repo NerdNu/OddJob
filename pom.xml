@@ -4,7 +4,7 @@
 	<groupId>nu.nerd</groupId>
 	<name>OddJob</name>
 	<artifactId>${project.name}</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<packaging>jar</packaging>
 	<description>A Bukkit plugin that executes scheduled tasks.</description>
 	<url>https://github.com/NerdNu/${project.name}</url>
