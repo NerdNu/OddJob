@@ -171,12 +171,12 @@ depending on the plugin, a different syntax may be used.
 If player *totemo* casts a vote, then the first of these commands runs a task
 of type `vote`, with a target *totemo* and the unique ID `vote-totemo`.
 Since no time stamp is specified, the `vote` task type executes immediately,
-granting *totemo* the `someplugin.somecommand` permission. Since the
+granting *totemo* the `someplugin.somepermission` permission. Since the
 `vote-totemo` task has now executed, the task is removed from the queue.
 
 The second command schedules execution of a task of type `unvote`, with 
 target *totemo* and ID `unvote-totemo` 24 hours in the future. When that
-task executes, it will revoke *totemo*'s `someplugin.somecommand` 
+task executes, it will revoke *totemo*'s `someplugin.somepermission` 
 permission. The permission check is redundant, but does no harm.
 
 If *totemo* votes again before the reward has expired, the same commands will
