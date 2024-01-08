@@ -3,8 +3,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>nu.nerd</groupId>
 	<name>OddJob</name>
-	<artifactId>${project.name}</artifactId>
-	<version>1.0.1</version>
+	<artifactId>OddJob</artifactId>
+	<version>1.0.2</version>
 	<packaging>jar</packaging>
 	<description>A Bukkit plugin that executes scheduled tasks.</description>
 	<url>https://github.com/NerdNu/${project.name}</url>
@@ -21,17 +21,21 @@
 			<id>spigot-repo</id>
 			<url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
 		</repository>
+		<repository>
+			<id>vault-repo</id>
+			<url>https://nexus.hc.to/content/repositories/pub_releases</url>
+		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
-			<version>1.12.1-R0.1-SNAPSHOT</version>
+			<version>1.20.2-R0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>net.milkbowl.vault</groupId>
 			<artifactId>VaultAPI</artifactId>
-			<version>LATEST</version>
+			<version>1.7</version>
 		</dependency>
 	</dependencies>
 	<build>
